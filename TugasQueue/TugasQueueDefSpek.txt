@@ -1,0 +1,53 @@
+{TUGAS INDIVIDU STRUKTUR DATA: ADT QUEUE}
+
+------------------DEFINISI & SPESIFIKASI TIPE & PROTOTYPE------------------
+{ Sebuah pos pemeriksaan perbatasan antar provinsi di jalan tol mengharuskan petugasnya untuk memeriksa setiap mobil yang melewatinya. Namun sering kali muncul masalah dimana petugas sering kali terlewat dalam memeriksa mobil hal ini dikarenakan tidak adanya palang penghalang dan banyaknya mobil yang terus berjalan (tailgating). Maka akhirnya digunakan Solusi agar setiap mobil yang datang(enqueue) harus berhenti dan tidak boleh bergerak hingga diperbolehkan (dengan dequeue(mobil telah diperiksa) atau Ketika mobil yang datang terkini menyentuh batas ujung perimeter pemeriksaan(enqueue terkini mencapai array terakhir)).  }
+
+module  borderCheck
+
+type plat   : < kodePlat    : array [1...2] of character,
+                angka		: array [1...4] of character,
+                huruf		: array [1...3] of character >
+
+type mobil  : <	kodeMobil       : plat,
+                golongan	    : integer [1...6],
+                jenisBarang     : boolean
+                kondisiBarang   : integer [1...2]
+			    status	        : integer [1...3] >
+{ Mobil selalu membawa barang, jenisBarang menentukan apakah barang tersebut merupakan barang gelap atau bukan }
+{ kondisi barang mobil, 1 = tersembunyi, 2 = tidak tersembunyi }
+{ kondisi barang ditentukan ketika adt mobil dibuat }
+{ tipe data mobil, status 1 = aman, 2 = mencurigakan, 3 = terkonfirmasi membawa barang gelap }
+{ Status di assign oleh petugas saat mobil dequeue, sebelum enqueue status selalu 1}
+
+type borderChQ  : <	antrian : array [1...10] of mobil,
+				    head    : integer,
+				    tail	: integer >
+
+type parkirT    : array [1...50] of mobil
+{ Tempat penahanan mobil sementara }
+
+procedure masuk (input/output S : borderChQ, input car : mobil)
+{ Menambah mobil ke dalam antrian (enqueue) }
+
+procedure cek (input/output S : borderChQ, input/output E : parkirT)
+{ Mengecek dan mengeluarkan mobil dari antrian (dequeue) }
+{ Me-assign status mobil menjadi 1 apabila kondisiBarang = 2, dan jenisBarang = false }
+{ Me-assign status mobil menjadi 2 apabila kondisi barang = 1 }
+{ Me-assign status mobil menjadi 3 apabila kondisiBarang = 2 dan jenisBarang = true }
+{ Jika status mobil 3 maka mobil akan dimasukkan ke parkirT }
+
+procedure maju (input/output S : borderChQ)
+{ Memberi sinyal kepada mobil untuk maju hingga batas pengecekan }
+
+function isLineEmpty (S : borderChQ) -> boolean
+{ Mengembalikan true apabila queue kosong }
+
+function isTailStop (S : borderChQ) -> boolean
+{ Mengembalikan true apabila tail mencapai akhir queue atau mobil terkini mencapai batas perimeter }
+
+function isBarangHidden (S : borderChQ) -> boolean
+{ Mengembalikan true apabila kondisiBarang = 1 }
+
+function isjenisBarang (S : borderChQ) -> boolean
+{ Mengembalikan true apabila barang merupakan barang selundup }
